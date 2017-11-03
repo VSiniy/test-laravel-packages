@@ -1,0 +1,23 @@
+{
+    "name": "ebola/activity",
+    "type": "package",
+    "description": "Activity for PHP 7.1 and package spatie/laravel-activitylog",
+    "keywords": ["activity"],
+    "homepage": "VSiniy/test-laravel-packages",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vlad Sinyavskiy",
+            "email": "vsinyavskiy@ebola.ua",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "Monolog": "src"
+        }
+    }
+}
