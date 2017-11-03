@@ -3,13 +3,12 @@
     "type": "package",
     "description": "Activity for PHP 7.1 and package spatie/laravel-activitylog",
     "keywords": ["activity"],
-    "homepage": "VSiniy/test-laravel-packages",
+    "homepage": "https://github.com/VSiniy/test-laravel-packages",
     "license": "MIT",
     "authors": [
         {
             "name": "Vlad Sinyavskiy",
             "email": "vsinyavskiy@ebola.ua",
-            "homepage": "https://github.com/VSiniy/test-laravel-packages",
             "role": "Developer"
         }
     ],
