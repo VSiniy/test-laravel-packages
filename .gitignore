@@ -1,0 +1,6 @@
+# Ignore Mac OS X thumbnails
+.DS_Store
+
+# Not ingore keep file
+!.gitkeep
+
