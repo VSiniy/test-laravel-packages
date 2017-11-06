@@ -12,16 +12,16 @@ class ActivityServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/activity.php' => config_path('activity.php'),
+            __DIR__ . '/../config/activity.php' => config_path('activity.php'),
         ], 'config');
 
-        // $this->mergeConfigFrom(__DIR__.'/../config/activity.php', 'activity');
-
-        // $viewPath = __DIR__.'/../resources/views';
-        // $this->loadViewsFrom($viewPath, 'activity');
         $this->publishes([
-            __DIR__.'/resources/views' => base_path('resources/views/vendor/activity'),
+            __DIR__ . '/resources/views' => base_path('resources/views/vendor/activity'),
         ], 'views');
+
+        $this->publishes([
+            __DIR__ . '/resources/assets' => public_path('vendor/activity'),
+        ], 'public');
     }
 
     /**
@@ -30,9 +30,5 @@ class ActivityServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/activity.php', 'activity');
-
-        // $configPath = __DIR__.'/../config/activity.php';
-        // $this->mergeConfigFrom($configPath, 'activity');
-        // $this->publishes([$configPath => config_path('activity.php')], 'config');
     }
 }
