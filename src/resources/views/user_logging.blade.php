@@ -36,7 +36,7 @@
 			      <td>{{ $row->created_at }}</td>
 			      <td>
 
-			      	@if (!is_null(Properties::getProperties($row, 'attributes')))
+			      	@if (!is_null(\Ebola\Logging\Helpers\Properties::getProperties($row, 'attributes')))
 			      		<div class="action-buttons dropdown" style="float: left; padding: 3px;">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
 						    <ul class="dropdown-menu">
@@ -44,7 +44,7 @@
 				              <li>
 				              	<div style="text-align: center;">
 
-				              		@foreach (Properties::getProperties($row, 'attributes') ?? [] as $key => $value)
+				              		@foreach (\Ebola\Logging\Helpers\Properties::getProperties($row, 'attributes') ?? [] as $key => $value)
 				              			<p style="margin: 0;">{{ $key }}</p>
 				              			<p style="display: inline-block; width:100%;">{{ $value }}</p>
 				              		@endforeach
@@ -56,7 +56,7 @@
 						</div>
 					@endif
 
-					@if (!is_null(Properties::getProperties($row, 'old')))
+					@if (!is_null(\Ebola\Logging\Helpers\Properties::getProperties($row, 'old')))Ebola\Logging\Renders\LoggingRender::class
 						<div class="action-buttons dropdown" style="float: left; padding: 3px;">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
 						    <ul class="dropdown-menu">
@@ -64,7 +64,7 @@
 				              <li>
 				              	<div style="text-align: center;">
 
-				              		@foreach (Properties::getProperties($row, 'old') ?? [] as $key => $value)
+				              		@foreach (\Ebola\Logging\Helpers\Properties::getProperties($row, 'old') ?? [] as $key => $value)
 				              			<p style="margin: 0;">{{ $key }}</p>
 				              			<p style="display: inline-block; width:100%;">{{ $value }}</p>
 				              		@endforeach
@@ -76,7 +76,7 @@
 						</div>
 					@endif
 
-					@if (!is_null(Properties::getPropertiesChanges($row)))
+					@if (!is_null(\Ebola\Logging\Helpers\Properties::getPropertiesChanges($row)))
 						<div class="action-buttons dropdown" style="float: left; padding: 3px;">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
 						    <ul class="dropdown-menu">
@@ -84,7 +84,7 @@
 				              <li>
 				              	<div style="text-align: center;">
 
-				              		@foreach (Properties::getPropertiesChanges($row) ?? [] as $value)
+				              		@foreach (\Ebola\Logging\Helpers\Properties::getPropertiesChanges($row) ?? [] as $value)
 				              			<p style="display: inline-block; width:100%;">{{ $value }}</p>
 				              		@endforeach
 				              		

@@ -19,9 +19,6 @@
     "autoload": {
         "psr-4": {
             "Ebola\\Logging\\": "src"
-        },
-        "files": [
-            "src/Helpers/Properties.php"
-        ]
+        }
     }
 }
