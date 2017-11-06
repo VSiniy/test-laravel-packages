@@ -15,6 +15,8 @@ class ActivityServiceProvider extends ServiceProvider
             __DIR__.'/../config/activity.php' => config_path('activity.php'),
         ], 'config');
 
+        $this->mergeConfigFrom(__DIR__.'/../config/activity.php', 'activity');
+
         $viewPath = __DIR__.'/../resources/views';
         $this->loadViewsFrom($viewPath, 'activity');
         $this->publishes([
