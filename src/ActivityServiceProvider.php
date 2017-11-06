@@ -21,7 +21,6 @@ class ActivityServiceProvider extends ServiceProvider
             $viewPath => base_path('resources/views/vendor/activity'),
         ], 'views');
 
-        $config = $this->app['config']->get('elfinder.route', []);
         $config['namespace'] = 'Ebola\Activity';
     }
 
