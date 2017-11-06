@@ -17,8 +17,11 @@
         "spatie/laravel-activitylog": "2.*"
     },
     "autoload": {
-        "psr-0": {
-            "Monolog": "src"
-        }
-    }
+        "psr-4": {
+            "Ebola\\Activity\\": "src"
+        },
+        "files": [
+            "src/Helpers/Properties.php"
+        ]
+    },
 }

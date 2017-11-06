@@ -14,6 +14,15 @@ class ActivityServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/activity.php' => config_path('activity.php'),
         ], 'config');
+
+        $viewPath = __DIR__.'/../resources/views';
+        $this->loadViewsFrom($viewPath, 'activity');
+        $this->publishes([
+            $viewPath => base_path('resources/views/vendor/activity'),
+        ], 'views');
+
+        $config = $this->app['config']->get('elfinder.route', []);
+        $config['namespace'] = 'Ebola\Activity';
     }
 
     /**
@@ -21,6 +30,8 @@ class ActivityServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/activity.php', 'activity');
+        $configPath = __DIR__ . '/../config/activity.php';
+        $this->mergeConfigFrom($configPath, 'activity');
+        $this->publishes([$configPath => config_path('activity.php')], 'config');
     }
 }
