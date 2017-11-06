@@ -20,8 +20,6 @@ class ActivityServiceProvider extends ServiceProvider
         $this->publishes([
             $viewPath => base_path('resources/views/vendor/activity'),
         ], 'views');
-
-        $config['namespace'] = 'Ebola\Activity';
     }
 
     /**
