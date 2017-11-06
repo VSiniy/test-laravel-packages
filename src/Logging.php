@@ -1,13 +1,13 @@
 <?php
 
-namespace Ebola\Activity;
+namespace Ebola\Logging;
 
 use Spatie\Activitylog\Models\Activity;
 
-class Activity
+class Logging
 {
-    const ROW_ACTIVITY_COUNT = 15;
-    const FILE_ACTIVITY_PATH = '/reports/';
+    const ROW_LOGGING_COUNT = 15;
+    const FILE_LOGGING_PATH = '/reports/';
 
     protected $user;
     protected $rowCount;
@@ -16,7 +16,7 @@ class Activity
     public function __construct($user=null, $rowCount=null)
     {
         $this->user     = $user;
-        $this->rowCount = $rowCount ?? self::ROW_ACTIVITY_COUNT;
+        $this->rowCount = $rowCount ?? self::ROW_LOGGING_COUNT;
     }
 
     public function setParameters($parameters)
@@ -51,13 +51,13 @@ class Activity
         return $rows;
     }
 
-    protected function getActivityFile()
+    protected function getLoggingFile()
     {
         $user       = $this->getUser();
         $parameters = $this->getParameters();
 
-        $filename   = (!is_null($user) ? 'user_id_' . $user->id . '_' : '') . 'activity_' . date('d-m-Y_H-i-s') . '.csv';
-        $out        = fopen(public_path() . self::FILE_ACTIVITY_PATH . $filename, 'w');
+        $filename   = (!is_null($user) ? 'user_id_' . $user->id . '_' : '') . 'logging_' . date('d-m-Y_H-i-s') . '.csv';
+        $out        = fopen(public_path() . self::FILE_LOGGING_PATH . $filename, 'w');
 
         if (array_key_exists('date_start', $parameters))
             $startDate = Carbon::parse($parameters['date_start'])->startOfDay()->format('Y-m-d H:i:s');
@@ -74,16 +74,16 @@ class Activity
 
         fwrite($out, "\xEF\xBB\xBF");
         fputcsv($out, [
-            __('admin.activity.fields.id'),
-            __('admin.activity.fields.log_name'),
-            __('admin.activity.fields.subject_id'),
-            __('admin.activity.fields.subject_type'),
-            __('admin.activity.fields.causer_id'),
-            __('admin.activity.fields.causer_type'),
-            __('admin.activity.fields.description'),
-            __('admin.activity.fields.properties'),
-            __('admin.activity.fields.created_at'),
-            __('admin.activity.fields.updated_at'),
+            __('admin.logging.fields.id'),
+            __('admin.logging.fields.log_name'),
+            __('admin.logging.fields.subject_id'),
+            __('admin.logging.fields.subject_type'),
+            __('admin.logging.fields.causer_id'),
+            __('admin.logging.fields.causer_type'),
+            __('admin.logging.fields.description'),
+            __('admin.logging.fields.properties'),
+            __('admin.logging.fields.created_at'),
+            __('admin.logging.fields.updated_at'),
         ], ';');
 
         foreach($rows as $row) {
@@ -103,13 +103,13 @@ class Activity
 
         fclose($out);
 
-        header('Location: ' . asset(self::FILE_ACTIVITY_PATH . $filename));
+        header('Location: ' . asset(self::FILE_LOGGING_PATH . $filename));
         header("Cache-Control: public");
         header('Content-Description: File Transfer');
         header('Content-Type: application/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header("Content-Transfer-Encoding: binary");
-        header('Content-Length: ' . filesize(public_path() . self::FILE_ACTIVITY_PATH . $filename));
+        header('Content-Length: ' . filesize(public_path() . self::FILE_LOGGING_PATH . $filename));
 
         exit;
     }

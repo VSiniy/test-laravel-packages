@@ -1,4 +1,4 @@
-ebola/activity
+ebola/logging
 
 Требования к установленному ПО
 

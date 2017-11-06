@@ -1,8 +1,8 @@
 <?php
 
-namespace Ebola\Activity\Listeners;
+namespace Ebola\Logging\Listeners;
 
-class UserEventActivity
+class UserEventLogging
 {
     /**
      * Handle user registered events.
@@ -77,42 +77,42 @@ class UserEventActivity
     {
         $events->listen(
             'Illuminate\Auth\Events\Registered',
-            'Ebola\Activity\Listeners\UserEventActivity@onUserRegistered'
+            'Ebola\Logging\Listeners\UserEventLogging@onUserRegistered'
         );
 
         $events->listen(
             'Illuminate\Auth\Events\Attempting',
-            'Ebola\Activity\Listeners\UserEventActivity@onUserAttempting'
+            'Ebola\Logging\Listeners\UserEventLogging@onUserAttempting'
         );
 
         // $events->listen(
         //     'Illuminate\Auth\Events\Authenticated',
-        //     'Ebola\Activity\Listeners\UserEventActivity@onUserAuthenticated'
+        //     'Ebola\Logging\Listeners\UserEventLogging@onUserAuthenticated'
         // );
 
         $events->listen(
             'Illuminate\Auth\Events\Login',
-            'Ebola\Activity\Listeners\UserEventActivity@onUserLogin'
+            'Ebola\Logging\Listeners\UserEventLogging@onUserLogin'
         );
 
         $events->listen(
             'Illuminate\Auth\Events\Failed',
-            'Ebola\Activity\Listeners\UserEventActivity@onUserFailed'
+            'Ebola\Logging\Listeners\UserEventLogging@onUserFailed'
         );
 
         $events->listen(
             'Illuminate\Auth\Events\Logout',
-            'Ebola\Activity\Listeners\UserEventActivity@onUserLogout'
+            'Ebola\Logging\Listeners\UserEventLogging@onUserLogout'
         );
 
         $events->listen(
             'Illuminate\Auth\Events\Lockout',
-            'Ebola\Activity\Listeners\UserEventActivity@onUserLockout'
+            'Ebola\Logging\Listeners\UserEventLogging@onUserLockout'
         );
 
         $events->listen(
             'Illuminate\Auth\Events\PasswordReset',
-            'Ebola\Activity\Listeners\UserEventActivity@onUserPasswordReset'
+            'Ebola\Logging\Listeners\UserEventLogging@onUserPasswordReset'
         );
     }
 }

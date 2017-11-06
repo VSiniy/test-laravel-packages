@@ -1,6 +1,6 @@
 <div class="box">
 	<div class="box-header">
-	  <h3 class="box-title">{{ __('admin.activity.user_activity.title') }}</h3>
+	  <h3 class="box-title">{{ __('admin.logging.user_logging.title') }}</h3>
 
 	  <div class="box-tools">
 
@@ -13,15 +13,15 @@
 	  <table class="table">
 	    <tbody>
 	    	<tr>
-		      <th style="width: 10px">{{ __('admin.activity.fields.id') }}</th>
-		      <th>{{ __('admin.activity.fields.log_name') }}</th>
-		      <th>{{ __('admin.activity.fields.subject_id') }}</th>
-		      <th>{{ __('admin.activity.fields.subject_type') }}</th>
-		      <th>{{ __('admin.activity.fields.causer_id') }}</th>
-		      <th>{{ __('admin.activity.fields.causer_type') }}</th>
-		      <th>{{ __('admin.activity.fields.description') }}</th>
-		      <th>{{ __('admin.activity.fields.created_at') }}</th>
-		      <th style="width: 10px">{{ __('admin.activity.fields.properties') }}</th>
+		      <th style="width: 10px">{{ __('admin.logging.fields.id') }}</th>
+		      <th>{{ __('admin.logging.fields.log_name') }}</th>
+		      <th>{{ __('admin.logging.fields.subject_id') }}</th>
+		      <th>{{ __('admin.logging.fields.subject_type') }}</th>
+		      <th>{{ __('admin.logging.fields.causer_id') }}</th>
+		      <th>{{ __('admin.logging.fields.causer_type') }}</th>
+		      <th>{{ __('admin.logging.fields.description') }}</th>
+		      <th>{{ __('admin.logging.fields.created_at') }}</th>
+		      <th style="width: 10px">{{ __('admin.logging.fields.properties') }}</th>
 		    </tr>
 
 	    	@foreach ($rows as $row)
@@ -40,7 +40,7 @@
 			      		<div class="action-buttons dropdown" style="float: left; padding: 3px;">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
 						    <ul class="dropdown-menu">
-				              <li class="header" style="text-align: center">{{ __('admin.activity.properties.attributes_title') }}</li>
+				              <li class="header" style="text-align: center">{{ __('admin.logging.properties.attributes_title') }}</li>
 				              <li>
 				              	<div style="text-align: center;">
 
@@ -60,7 +60,7 @@
 						<div class="action-buttons dropdown" style="float: left; padding: 3px;">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
 						    <ul class="dropdown-menu">
-				              <li class="header" style="text-align: center">{{ __('admin.activity.properties.old_attributes_title') }}</li>
+				              <li class="header" style="text-align: center">{{ __('admin.logging.properties.old_attributes_title') }}</li>
 				              <li>
 				              	<div style="text-align: center;">
 
@@ -80,7 +80,7 @@
 						<div class="action-buttons dropdown" style="float: left; padding: 3px;">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
 						    <ul class="dropdown-menu">
-				              <li class="header" style="text-align: center">{{ __('admin.activity.properties.changes_title') }}</li>
+				              <li class="header" style="text-align: center">{{ __('admin.logging.properties.changes_title') }}</li>
 				              <li>
 				              	<div style="text-align: center;">
 

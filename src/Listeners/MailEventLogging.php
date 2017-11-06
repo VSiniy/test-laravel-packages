@@ -1,8 +1,8 @@
 <?php
 
-namespace Ebola\Activity\Listeners;
+namespace Ebola\Logging\Listeners;
 
-class MailEventActivity
+class MailEventLogging
 {
     /**
      * Handle message sending events.
@@ -22,7 +22,7 @@ class MailEventActivity
     {
         $events->listen(
             'Illuminate\Mail\Events\MessageSending',
-            'Ebola\Activity\Listeners\MailEventActivity@onMessageSending'
+            'Ebola\Logging\Listeners\MailEventLogging@onMessageSending'
         );
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ebola\Activity\Helpers;
+namespace Ebola\Logging\Helpers;
 
 use Spatie\Activitylog\Models\Activity;
 

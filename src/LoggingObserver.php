@@ -1,10 +1,10 @@
 <?php
 
-namespace Ebola\Activity;
+namespace Ebola\Logging;
 
-use Ebola\Activity\Helpers\Properties;
+use Ebola\Logging\Helpers\Properties;
 
-class ActivityObserver
+class LoggingObserver
 {
     /**
      * Listen to the model created event.

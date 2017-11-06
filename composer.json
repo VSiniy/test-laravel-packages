@@ -1,8 +1,8 @@
 {
-    "name": "ebola/activity",
+    "name": "ebola/logging",
     "type": "package",
-    "description": "Activity for PHP 7.1 and package spatie/laravel-activitylog",
-    "keywords": ["activity"],
+    "description": "Logging for PHP 7.1 and package spatie/laravel-activitylog",
+    "keywords": ["logging", "activity"],
     "homepage": "https://github.com/VSiniy/test-laravel-packages",
     "license": "MIT",
     "authors": [
@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Ebola\\Activity\\": "src"
+            "Ebola\\Logging\\": "src"
         },
         "files": [
             "src/Helpers/Properties.php"

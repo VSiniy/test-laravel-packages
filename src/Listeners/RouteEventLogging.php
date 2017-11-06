@@ -1,8 +1,8 @@
 <?php
 
-namespace Ebola\Activity\Listeners;
+namespace Ebola\Logging\Listeners;
 
-class RouteEventActivity
+class RouteEventLogging
 {
     /**
      * Handle user go to route.
@@ -25,7 +25,7 @@ class RouteEventActivity
     {
         $events->listen(
             'Illuminate\Routing\Events\RouteMatched',
-            'Ebola\Activity\Listeners\RouteEventActivity@onGoToRoute'
+            'Ebola\Logging\Listeners\RouteEventLogging@onGoToRoute'
         );
     }
 }
