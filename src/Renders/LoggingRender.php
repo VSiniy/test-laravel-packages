@@ -22,7 +22,7 @@ class LoggingRender extends Logging
 
         $rows     = $rows->paginate($this->logging->getRowCount());
 
-        return view('admin.logging.user_logging', compact('rows'));
+        return view('vendor.logging.user_logging', compact('rows'));
     }
 
     public function renderDownloadLogging()
@@ -36,7 +36,7 @@ class LoggingRender extends Logging
             ]);
 
             if ($validator->fails()) {
-                return view('admin.logging.download_logging')->withErrors($validator);
+                return view('vendor.logging.download_logging')->withErrors($validator);
             } else {
                 $this->logging->setParameters($request->all());
 
@@ -44,6 +44,6 @@ class LoggingRender extends Logging
             }
         }
 
-        return view('admin.logging.download_logging');
+        return view('vendor.logging.download_logging');
     }
 }
