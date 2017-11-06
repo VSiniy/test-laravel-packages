@@ -20,7 +20,7 @@ class ActivityServiceProvider extends ServiceProvider
         // $viewPath = __DIR__.'/../resources/views';
         // $this->loadViewsFrom($viewPath, 'activity');
         $this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/activity'),
+            __DIR__.'/resources/views' => base_path('resources/views/vendor/activity'),
         ], 'views');
     }
 
