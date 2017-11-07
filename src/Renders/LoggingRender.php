@@ -10,23 +10,29 @@ use Carbon\Carbon;
 class LoggingRender extends Logging
 {
     private $logging;
+    public $pathToTranslations;
 
     public function __construct($user=null, $rowCount=null)
     {
-        $this->logging = new Logging($user, $rowCount);
+        $this->logging            = new Logging($user, $rowCount);
+        $this->pathToTranslations = config('logging.path_to_translations');
     }
 
     public function renderUserLogging()
     {
+        $pathToTranslations = $this->pathToTranslations;
+
         $rows     = $this->logging->getRows();
 
         $rows     = $rows->paginate($this->logging->getRowCount());
 
-        return view('vendor.logging.user_logging', compact('rows'));
+        return view('logging::user_logging', compact('rows', 'pathToTranslations'));
     }
 
     public function renderDownloadLogging()
     {
+        $pathToTranslations = $this->pathToTranslations;
+
         $request = request();
 
         if ($request->has('date_start') || $request->has('date_end')) {
@@ -36,7 +42,7 @@ class LoggingRender extends Logging
             ]);
 
             if ($validator->fails()) {
-                return view('vendor.logging.download_logging')->withErrors($validator);
+                return view('logging::download_logging', compact('pathToTranslations'))->withErrors($validator);
             } else {
                 $this->logging->setParameters($request->all());
 
@@ -44,6 +50,6 @@ class LoggingRender extends Logging
             }
         }
 
-        return view('vendor.logging.download_logging');
+        return view('logging::download_logging', compact('pathToTranslations'));
     }
 }

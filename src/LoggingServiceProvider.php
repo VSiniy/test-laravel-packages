@@ -15,6 +15,8 @@ class  LoggingServiceProvider extends ServiceProvider
             __DIR__ . '/../config/logging.php' => config_path('logging.php'),
         ], 'config');
 
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'logging');
+
         $this->publishes([
             __DIR__ . '/resources/views' => base_path('resources/views/vendor/logging'),
         ], 'views');
@@ -22,6 +24,12 @@ class  LoggingServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/resources/assets' => public_path('vendor/logging'),
         ], 'public');
+
+        $this->loadTranslationsFrom(__DIR__ . '/resources/lang', 'logging');
+
+        $this->publishes([
+            __DIR__ . '/resources/lang' => resource_path('lang/vendor/logging'),
+        ], 'translations');
     }
 
     /**

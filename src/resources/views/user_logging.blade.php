@@ -1,6 +1,6 @@
 <div class="box">
 	<div class="box-header">
-	  <h3 class="box-title">{{ __('admin.logging.user_logging.title') }}</h3>
+	  <h3 class="box-title">{{ trans_choice($pathToTranslations . '.user_logging.title', 'logging::logging.user_logging.title') }}</h3>
 
 	  <div class="box-tools">
 
@@ -13,15 +13,15 @@
 	  <table class="table">
 	    <tbody>
 	    	<tr>
-		      <th style="width: 10px">{{ __('admin.logging.fields.id') }}</th>
-		      <th>{{ __('admin.logging.fields.log_name') }}</th>
-		      <th>{{ __('admin.logging.fields.subject_id') }}</th>
-		      <th>{{ __('admin.logging.fields.subject_type') }}</th>
-		      <th>{{ __('admin.logging.fields.causer_id') }}</th>
-		      <th>{{ __('admin.logging.fields.causer_type') }}</th>
-		      <th>{{ __('admin.logging.fields.description') }}</th>
-		      <th>{{ __('admin.logging.fields.created_at') }}</th>
-		      <th style="width: 10px">{{ __('admin.logging.fields.properties') }}</th>
+		      <th style="width: 10px">{{ trans_choice($pathToTranslations . '.fields.id', 'logging::logging.fields.id') }}</th>
+		      <th>{{ trans_choice($pathToTranslations . '.fields.log_name', 'logging::logging.fields.log_name') }}</th>
+		      <th>{{ trans_choice($pathToTranslations . '.fields.subject_id', 'logging::logging.fields.subject_id') }}</th>
+		      <th>{{ trans_choice($pathToTranslations . '.fields.subject_type', 'logging::logging.fields.subject_type') }}</th>
+		      <th>{{ trans_choice($pathToTranslations . '.fields.causer_id', 'logging::logging.fields.causer_id') }}</th>
+		      <th>{{ trans_choice($pathToTranslations . '.fields.causer_type', 'logging::logging.fields.causer_type') }}</th>
+		      <th>{{ trans_choice($pathToTranslations . '.fields.description', 'logging::logging.fields.description') }}</th>
+		      <th>{{ trans_choice($pathToTranslations . '.fields.created_at', 'logging::logging.fields.created_at') }}</th>
+		      <th style="width: 10px">{{ trans_choice($pathToTranslations . '.fields.properties', 'logging::logging.fields.properties') }}</th>
 		    </tr>
 
 	    	@foreach ($rows as $row)
@@ -40,7 +40,7 @@
 			      		<div class="action-buttons dropdown" style="float: left; padding: 3px;">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
 						    <ul class="dropdown-menu">
-				              <li class="header" style="text-align: center">{{ __('admin.logging.properties.attributes_title') }}</li>
+				              <li class="header" style="text-align: center">{{ trans_choice($pathToTranslations . '.properties.attributes_title', 'logging::logging.properties.attributes_title') }}</li>
 				              <li>
 				              	<div style="text-align: center;">
 
@@ -56,11 +56,11 @@
 						</div>
 					@endif
 
-					@if (!is_null(\Ebola\Logging\Helpers\Properties::getProperties($row, 'old')))Ebola\Logging\Renders\LoggingRender::class
+					@if (!is_null(\Ebola\Logging\Helpers\Properties::getProperties($row, 'old')))
 						<div class="action-buttons dropdown" style="float: left; padding: 3px;">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
 						    <ul class="dropdown-menu">
-				              <li class="header" style="text-align: center">{{ __('admin.logging.properties.old_attributes_title') }}</li>
+				              <li class="header" style="text-align: center">{{ trans_choice($pathToTranslations . '.properties.old_attributes_title', 'logging::logging.properties.old_attributes_title') }}</li>
 				              <li>
 				              	<div style="text-align: center;">
 
@@ -80,7 +80,7 @@
 						<div class="action-buttons dropdown" style="float: left; padding: 3px;">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
 						    <ul class="dropdown-menu">
-				              <li class="header" style="text-align: center">{{ __('admin.logging.properties.changes_title') }}</li>
+				              <li class="header" style="text-align: center">{{ trans_choice($pathToTranslations . '.properties.changes_title', 'logging::logging.properties.changes_title') }}</li>
 				              <li>
 				              	<div style="text-align: center;">
 

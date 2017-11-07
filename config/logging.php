@@ -40,6 +40,11 @@ return [
     ],
 
     /*
+     * Translations path
+     */
+    'path_to_translations' => 'admin.logging',
+
+    /*
      * Number rows for display on one page paginate
      */
     'num_rows_on_page' => 15,
