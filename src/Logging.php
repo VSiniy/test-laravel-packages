@@ -6,17 +6,16 @@ use Spatie\Activitylog\Models\Activity;
 
 class Logging
 {
-    const ROW_LOGGING_COUNT = 15;
-    const FILE_LOGGING_PATH = '/reports/';
-
     protected $user;
     protected $rowCount;
+    protected $fileLoggingPath;
     protected $parameters = [];
 
-    public function __construct($user=null, $rowCount=null)
+    public function __construct($user, $rowCount)
     {
-        $this->user     = $user;
-        $this->rowCount = $rowCount ?? self::ROW_LOGGING_COUNT;
+        $this->user            = $user;
+        $this->rowCount        = $rowCount ?? config('logging.num_rows_on_page');
+        $this->fileLoggingPath = config('logging.download_path');
     }
 
     public function setParameters($parameters)
@@ -32,6 +31,11 @@ class Logging
     public function getRowCount()
     {
         return $this->rowCount;
+    }
+
+    public function getFileLoggingPath()
+    {
+        return $this->fileLoggingPath;
     }
 
     public function getParameters()
@@ -53,11 +57,13 @@ class Logging
 
     protected function getLoggingFile()
     {
+        $fileLoggingPath = $this->getFileLoggingPath();
+
         $user       = $this->getUser();
         $parameters = $this->getParameters();
 
         $filename   = (!is_null($user) ? 'user_id_' . $user->id . '_' : '') . 'logging_' . date('d-m-Y_H-i-s') . '.csv';
-        $out        = fopen(public_path() . self::FILE_LOGGING_PATH . $filename, 'w');
+        $out        = fopen(public_path() . $fileLoggingPath . $filename, 'w');
 
         if (array_key_exists('date_start', $parameters))
             $startDate = Carbon::parse($parameters['date_start'])->startOfDay()->format('Y-m-d H:i:s');
@@ -103,13 +109,13 @@ class Logging
 
         fclose($out);
 
-        header('Location: ' . asset(self::FILE_LOGGING_PATH . $filename));
+        header('Location: ' . asset($fileLoggingPath . $filename));
         header("Cache-Control: public");
         header('Content-Description: File Transfer');
         header('Content-Type: application/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header("Content-Transfer-Encoding: binary");
-        header('Content-Length: ' . filesize(public_path() . self::FILE_LOGGING_PATH . $filename));
+        header('Content-Length: ' . filesize(public_path() . $fileLoggingPath . $filename));
 
         exit;
     }

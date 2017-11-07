@@ -4,6 +4,15 @@ namespace Ebola\Logging\Listeners;
 
 class UserEventLogging
 {
+    const EVENT_REGISTERED     = 'registered';
+    const EVENT_ATTEMPTING     = 'attempting';
+    const EVENT_AUTHENTICATED  = 'authenticated';
+    const EVENT_LOGIN          = 'login';
+    const EVENT_FAILED         = 'failed';
+    const EVENT_LOGOUT         = 'logout';
+    const EVENT_LOCKOUT        = 'lockout';
+    const EVENT_PASSWORD_RESET = 'password_reset';
+
     /**
      * Handle user registered events.
      */
@@ -25,7 +34,8 @@ class UserEventLogging
      */
     public function onUserAuthenticated($event) 
     {
-        activity('user-authenticated')->log('User authenticated');
+        if (!\Request::ajax())
+            activity('user-authenticated')->log('User authenticated');
     }
 
     /**
@@ -75,44 +85,54 @@ class UserEventLogging
      */
     public function subscribe($events)
     {
-        $events->listen(
-            'Illuminate\Auth\Events\Registered',
-            'Ebola\Logging\Listeners\UserEventLogging@onUserRegistered'
-        );
+        $loggingUsers = config('logging.logging_users');
 
-        $events->listen(
-            'Illuminate\Auth\Events\Attempting',
-            'Ebola\Logging\Listeners\UserEventLogging@onUserAttempting'
-        );
+        if (in_array(self::EVENT_REGISTERED, $loggingUsers))
+            $events->listen(
+                'Illuminate\Auth\Events\Registered',
+                'Ebola\Logging\Listeners\UserEventLogging@onUserRegistered'
+            );
 
-        // $events->listen(
-        //     'Illuminate\Auth\Events\Authenticated',
-        //     'Ebola\Logging\Listeners\UserEventLogging@onUserAuthenticated'
-        // );
+        if (in_array(self::EVENT_ATTEMPTING, $loggingUsers))
+            $events->listen(
+                'Illuminate\Auth\Events\Attempting',
+                'Ebola\Logging\Listeners\UserEventLogging@onUserAttempting'
+            );
 
-        $events->listen(
-            'Illuminate\Auth\Events\Login',
-            'Ebola\Logging\Listeners\UserEventLogging@onUserLogin'
-        );
+        if (in_array(self::EVENT_AUTHENTICATED, $loggingUsers))
+            $events->listen(
+                'Illuminate\Auth\Events\Authenticated',
+                'Ebola\Logging\Listeners\UserEventLogging@onUserAuthenticated'
+            );
 
-        $events->listen(
-            'Illuminate\Auth\Events\Failed',
-            'Ebola\Logging\Listeners\UserEventLogging@onUserFailed'
-        );
+        if (in_array(self::EVENT_LOGIN, $loggingUsers))
+            $events->listen(
+                'Illuminate\Auth\Events\Login',
+                'Ebola\Logging\Listeners\UserEventLogging@onUserLogin'
+            );
 
-        $events->listen(
-            'Illuminate\Auth\Events\Logout',
-            'Ebola\Logging\Listeners\UserEventLogging@onUserLogout'
-        );
+        if (in_array(self::EVENT_FAILED, $loggingUsers))
+            $events->listen(
+                'Illuminate\Auth\Events\Failed',
+                'Ebola\Logging\Listeners\UserEventLogging@onUserFailed'
+            );
 
-        $events->listen(
-            'Illuminate\Auth\Events\Lockout',
-            'Ebola\Logging\Listeners\UserEventLogging@onUserLockout'
-        );
+        if (in_array(self::EVENT_LOGOUT, $loggingUsers))
+            $events->listen(
+                'Illuminate\Auth\Events\Logout',
+                'Ebola\Logging\Listeners\UserEventLogging@onUserLogout'
+            );
 
-        $events->listen(
-            'Illuminate\Auth\Events\PasswordReset',
-            'Ebola\Logging\Listeners\UserEventLogging@onUserPasswordReset'
-        );
+        if (in_array(self::EVENT_LOCKOUT, $loggingUsers))
+            $events->listen(
+                'Illuminate\Auth\Events\Lockout',
+                'Ebola\Logging\Listeners\UserEventLogging@onUserLockout'
+            );
+
+        if (in_array(self::EVENT_PASSWORD_RESET, $loggingUsers))
+            $events->listen(
+                'Illuminate\Auth\Events\PasswordReset',
+                'Ebola\Logging\Listeners\UserEventLogging@onUserPasswordReset'
+            );
     }
 }

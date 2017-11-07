@@ -4,15 +4,30 @@ namespace Ebola\Logging\Listeners;
 
 class RequestEventLogging
 {
+    const WEB_SITE_PREFIX = 'web';
+
     /**
      * Handle user go to route.
      */
     public function onGoToRoute($event) 
     {
-        if ((strpos($event->request->getRequestUri(), env('ROUTING_LOG')) !== false)) {
-            $url = route('home') . ((strpos($event->request->getRequestUri(), '?') !== false) ? substr($event->request->getRequestUri(), 0, strpos($event->request->getRequestUri(), '?')) : $event->request->getRequestUri());
+        $loggingRoutes = config('logging.logging_routing_prefixes');
 
-            activity('route')->log('Go to url ' . $url);
+        $webKey        = array_search(self::WEB_SITE_PREFIX, $loggingRoutes);
+
+        if ($webKey !== false) 
+            $loggingRoutes = array_replace($loggingRoutes, [$webKey => null]);
+
+        $routePrefix = trim($event->request->route()->getPrefix(), '/');
+        $routeUri    = $event->request->getRequestUri();
+        $homeUrl     = $event->request->getSchemeAndHttpHost();
+
+        if (in_array($routePrefix, $loggingRoutes)) {
+            if (!$event->request->ajax() || ($event->request->ajax() && config('logging.logging_routing_save_ajax'))) {
+                $url = $homeUrl . ((strpos($routeUri, '?') !== false) ? substr($routeUri, 0, strpos($routeUri, '?')) : $routeUri);
+
+                activity('route')->log('Go to url ' . $url);
+            }
         }
     }
 

@@ -1,39 +1,42 @@
 <?php
 
-
 return [
 
     /*
-     * If set to false, no activities will be saved to the database.
+     * Route prefixes for save transitions on the URL
+     * 'web' is all routes without prefix
      */
-    'enabled' => true,
+    'logging_routing_prefixes' => [
+        'web',
+        'admin',
+    ],
 
     /*
-     * When the clean-command is executed, all recording activities older than
-     * the number of days specified here will be deleted.
+     * Save transition if route is ajax query
      */
-    'delete_records_older_than_days' => 365,
+    'logging_routing_save_ajax' => false,
 
     /*
-     * If no log name is passed to the activity() helper
-     * we use this default log name.
+     * Users events for save
      */
-    'default_log_name' => 'default',
+    'logging_users' => [
+        'registered',
+        'attempting',
+        // 'authenticated',
+        'login',
+        'failed',
+        'logout',
+        'lockout',
+        'password_reset',
+    ],
 
     /*
-     * You can specify an auth driver here that gets user models.
-     * If this is null we'll use the default Laravel auth driver.
+     * Number rows for display on one page paginate
      */
-    'default_auth_driver' => null,
+    'num_rows_on_page' => 15,
 
     /*
-     * If set to true, the subject returns soft deleted models.
+     * Path to folder where logging files are saving
      */
-    'subject_returns_soft_deleted_models' => false,
-
-    /*
-     * This model will be used to log activity. The only requirement is that
-     * it should be or extend the Spatie\Activitylog\Models\Activity model.
-     */
-    'activity_model' => \Spatie\Activitylog\Models\Activity::class,
+    'download_path' => '/reports/',
 ];
