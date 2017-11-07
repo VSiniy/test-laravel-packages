@@ -6,6 +6,17 @@ use Ebola\Logging\Helpers\Properties;
 
 class LoggingObserver
 {
+    const CREATED_EVENT = 'created';
+    const UPDATED_EVENT = 'updated';
+    const DELETED_EVENT = 'deleted';
+
+    public $loggingModelsEvents;
+
+    public function __construct()
+    {
+        $this->loggingModelsEvents = config('logging.logging_models_events');
+    }
+
     /**
      * Listen to the model created event.
      *
@@ -14,9 +25,10 @@ class LoggingObserver
      */
     public function created($model)
     {
-        activity('created')->performedOn($model)
-                           ->withProperties(Properties::getPropertiesArray($model))
-                           ->log('The ' . class_basename($model) . ' was created');
+        if (in_array(self::CREATED_EVENT, $this->loggingModelsEvents))
+            activity('created')->performedOn($model)
+                               ->withProperties(Properties::getPropertiesArray($model))
+                               ->log('The ' . class_basename($model) . ' was created');
     }
 
     /**
@@ -27,9 +39,10 @@ class LoggingObserver
      */
     public function updating($model)
     {
-        activity('updated')->performedOn($model)
-                           ->withProperties(Properties::getPropertiesArray($model))
-                           ->log('The ' . class_basename($model) . ' was updated');
+        if (in_array(self::UPDATED_EVENT, $this->loggingModelsEvents))
+            activity('updated')->performedOn($model)
+                               ->withProperties(Properties::getPropertiesArray($model))
+                               ->log('The ' . class_basename($model) . ' was updated');
     }
 
     /**
@@ -40,8 +53,9 @@ class LoggingObserver
      */
     public function deleting($model)
     {
-        activity('deleted')->performedOn($model)
-                           ->withProperties(Properties::getPropertiesArray($model))
-                           ->log('The ' . class_basename($model) . ' was deleted');
+        if (in_array(self::DELETED_EVENT, $this->loggingModelsEvents))
+            activity('deleted')->performedOn($model)
+                               ->withProperties(Properties::getPropertiesArray($model))
+                               ->log('The ' . class_basename($model) . ' was deleted');
     }
 }

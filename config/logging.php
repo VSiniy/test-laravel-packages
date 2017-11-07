@@ -8,7 +8,7 @@ return [
      */
     'logging_routing_prefixes' => [
         'web',
-        'admin',
+        // 'admin',
     ],
 
     /*
@@ -19,7 +19,7 @@ return [
     /*
      * Users events for save
      */
-    'logging_users' => [
+    'logging_users_events' => [
         'registered',
         'attempting',
         // 'authenticated',
@@ -28,6 +28,15 @@ return [
         'logout',
         'lockout',
         'password_reset',
+    ],
+
+    /*
+     * Models events for save
+     */
+    'logging_models_events' => [
+        'created',
+        'updated',
+        'deleted',
     ],
 
     /*
