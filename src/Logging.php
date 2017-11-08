@@ -2,30 +2,33 @@
 
 namespace Ebola\Logging;
 
-use Spatie\Activitylog\Models\Activity;
-
 class Logging
 {
     protected $user;
+    protected $fields;
     protected $rowCount;
     protected $fileLoggingPath;
-    protected $parameters = [];
+    protected $activityModel;
+    protected $translationPath;
 
-    public function __construct($user, $rowCount)
+    public function __construct($user, $fields, $rowCount)
     {
         $this->user            = $user;
+        $this->fields          = $fields ?? config('logging.logging_fields');
         $this->rowCount        = $rowCount ?? config('logging.num_rows_on_page');
         $this->fileLoggingPath = config('logging.download_path');
-    }
-
-    public function setParameters($parameters)
-    {
-        $this->parameters = $parameters;
+        $this->activityModel   = config('activitylog.activity_model');
+        $this->translationPath = config('logging.translation_path');
     }
 
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function getFields()
+    {
+        return $this->fields;
     }
 
     public function getRowCount()
@@ -38,16 +41,34 @@ class Logging
         return $this->fileLoggingPath;
     }
 
-    public function getParameters()
+    public function getActivityModel()
     {
-        return $this->parameters;
+        return $this->activityModel;
+    }
+
+    public function getTranslationPath()
+    {
+        return $this->translationPath;
+    }
+
+    public function getTranslatedFields()
+    {
+        $translationPath = $this->getTranslationPath() ?? 'logging::logging.fields';
+
+        $translatedFields = [];
+        foreach ($this->getFields() as $field) {
+            $translatedFields[$field] = __($translationPath . '.' . $field);
+        }
+
+        return $translatedFields;
     }
 
     protected function getRows()
     {
-        $user = $this->getUser();
+        $user          = $this->getUser();
+        $activityModel = $this->getActivityModel();
 
-        $rows = Activity::select(['*']);
+        $rows = $activityModel::select(['*']);
 
         if (isset($user))
             $rows = $rows->where('causer_id', $user->id);
@@ -55,56 +76,26 @@ class Logging
         return $rows;
     }
 
-    protected function getLoggingFile()
+    protected function getLoggingFile($rows)
     {
         $fileLoggingPath = $this->getFileLoggingPath();
 
         $user       = $this->getUser();
-        $parameters = $this->getParameters();
 
         $filename   = (!is_null($user) ? 'user_id_' . $user->id . '_' : '') . 'logging_' . date('d-m-Y_H-i-s') . '.csv';
         $out        = fopen(public_path() . $fileLoggingPath . $filename, 'w');
 
-        if (array_key_exists('date_start', $parameters))
-            $startDate = Carbon::parse($parameters['date_start'])->startOfDay()->format('Y-m-d H:i:s');
-
-        if (array_key_exists('date_end', $parameters))
-            $endDate   = Carbon::parse($parameters['date_end'])->endOfDay()->format('Y-m-d H:i:s');
-
-        $rows = $this->getRows(); 
-
-        if (isset($startDate) && isset($endDate)) 
-            $rows = $rows->whereBetween('created_at', array($startDate, $endDate));
-
-        $rows = $rows->get();
-
         fwrite($out, "\xEF\xBB\xBF");
-        fputcsv($out, [
-            __('logging::logging.fields.id'),
-            __('logging::logging.fields.log_name'),
-            __('logging::logging.fields.subject_id'),
-            __('logging::logging.fields.subject_type'),
-            __('logging::logging.fields.causer_id'),
-            __('logging::logging.fields.causer_type'),
-            __('logging::logging.fields.description'),
-            __('logging::logging.fields.properties'),
-            __('logging::logging.fields.created_at'),
-            __('logging::logging.fields.updated_at'),
-        ], ';');
+        fputcsv($out, $this->getTranslatedFields(), ';');
 
-        foreach($rows as $row) {
-            fputcsv($out, [
-                $row->id,
-                $row->log_name,
-                $row->subject_id,
-                $row->subject_type,
-                $row->causer_id,
-                $row->causer_type,
-                $row->description,
-                $row->properties,
-                $row->created_at->format('d.m.Y'),
-                $row->updated_at->format('d.m.Y'),
-            ], ';');
+        foreach($rows ?? [] as $row) {
+
+            $fieldsForSave = [];
+            foreach ($this->getFields() as $field) {
+                $fieldsForSave[] = $row->{$field};
+            }
+
+            fputcsv($out, $fieldsForSave, ';');
         }
 
         fclose($out);

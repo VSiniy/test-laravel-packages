@@ -48,4 +48,26 @@ return [
      * Path to folder where logging files are saving
      */
     'download_path' => '/reports/',
+
+    /*
+     * List of logging models fields
+     */
+    'logging_fields' => [
+        'id',
+        'log_name',
+        'subject_id',
+        'subject_type',
+        'causer_id',
+        'causer_type',
+        'description',
+        'properties',
+        'created_at',
+        // 'updated_at',
+    ],
+
+    /*
+     * Path to translated logging fields
+     * Need path to fields translates in "dot" notation
+     */
+    'translation_path' => null, // 'admin.logging.fields => []'
 ];

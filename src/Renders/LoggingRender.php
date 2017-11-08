@@ -11,9 +11,9 @@ class LoggingRender extends Logging
 {
     private $logging;
 
-    public function __construct($user=null, $rowCount=null)
+    public function __construct($user=null, $fields=null, $rowCount=null)
     {
-        $this->logging            = new Logging($user, $rowCount);
+        $this->logging = new Logging($user, $fields, $rowCount);
     }
 
     public function renderUserLogging()
@@ -22,7 +22,10 @@ class LoggingRender extends Logging
 
         $rows     = $rows->paginate($this->logging->getRowCount());
 
-        return view('logging::user_logging', compact('rows'));
+        $fields           = $this->logging->getFields();
+        $translatedFields = $this->logging->getTranslatedFields();
+
+        return view('logging::user_logging', compact('rows', 'fields', 'translatedFields'));
     }
 
     public function renderDownloadLogging()
@@ -38,9 +41,14 @@ class LoggingRender extends Logging
             if ($validator->fails()) {
                 return view('logging::download_logging')->withErrors($validator);
             } else {
-                $this->logging->setParameters($request->all());
+                $startDate = Carbon::parse($request->date_start)->startOfDay()->format('Y-m-d H:i:s');
+                $endDate   = Carbon::parse($request->date_end)->endOfDay()->format('Y-m-d H:i:s');
 
-                $this->logging->getLoggingFile();
+                $rows = $this->logging->getRows(); 
+                $rows = $rows->whereBetween('created_at', array($startDate, $endDate));
+                $rows = $rows->get();
+
+                $this->logging->getLoggingFile($rows);
             }
         }
 

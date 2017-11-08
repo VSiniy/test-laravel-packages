@@ -13,27 +13,22 @@
 	  <table class="table">
 	    <tbody>
 	    	<tr>
-		      <th style="width: 5%">{{ __('logging::logging.fields.id') }}</th>
-		      <th>{{ __('logging::logging.fields.log_name') }}</th>
-		      <th>{{ __('logging::logging.fields.subject_id') }}</th>
-		      <th>{{ __('logging::logging.fields.subject_type') }}</th>
-		      <th>{{ __('logging::logging.fields.causer_id') }}</th>
-		      <th>{{ __('logging::logging.fields.causer_type') }}</th>
-		      <th>{{ __('logging::logging.fields.description') }}</th>
-		      <th>{{ __('logging::logging.fields.created_at') }}</th>
-		      <th style="width: 10%">{{ __('logging::logging.fields.properties') }}</th>
+
+	    		@foreach ($translatedFields as $field)
+	    			<th>{{ $field }}</th>
+	    		@endforeach
+
+	    		<th>{{ __('logging::logging.fields.properties') }}</th>
+
 		    </tr>
 
 	    	@foreach ($rows as $row)
 	    		<tr>
-	    		  <td>{{ $row->id }}</td>
-			      <td>{{ $row->log_name }}</td>
-			      <td>{{ $row->subject_id }}</td>
-			      <td>{{ $row->subject_type }}</td>
-			      <td>{{ $row->causer_id }}</td>
-			      <td>{{ $row->causer_type }}</td>
-			      <td>{{ $row->description }}</td>
-			      <td>{{ $row->created_at }}</td>
+
+	    			@foreach ($fields as $field)
+	    				<td>{{ $row->{$field} }}</td>
+	    			@endforeach
+
 			      <td>
 
 			      	@if (!is_null(\Ebola\Logging\Helpers\Properties::getProperties($row, 'attributes')))

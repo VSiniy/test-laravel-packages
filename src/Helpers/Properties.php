@@ -2,18 +2,16 @@
 
 namespace Ebola\Logging\Helpers;
 
-use Spatie\Activitylog\Models\Activity;
-
 class Properties
 {
-    public static function getProperties(Activity $activity, $flag='attributes')
+    public static function getProperties($activity, $flag='attributes')
     {   
         $properties = $activity->properties->toArray();
 
         return array_key_exists($flag, $properties) ? $properties[$flag] : null;
     }
 
-    public static function getPropertiesChanges(Activity $activity)
+    public static function getPropertiesChanges($activity)
     {
         $attributes = self::getProperties($activity, 'attributes');
         $old        = self::getProperties($activity, 'old');
