@@ -19,6 +19,7 @@ return [
         'causer_type' => 'Модель користувача',
         'description' => 'Опис',
         'created_at' => 'Створено',
+        'updated_at' => 'Оновлено',
         'properties' => 'Значення моделі',
     ],
     'properties' => [

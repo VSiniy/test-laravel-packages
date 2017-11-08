@@ -19,6 +19,7 @@ return [
         'causer_type' => 'Модель пользователя',
         'description' => 'Описание',
         'created_at' => 'Создан',
+        'updated_at' => 'Обновлен',
         'properties' => 'Значения модели',
     ],
     'properties' => [

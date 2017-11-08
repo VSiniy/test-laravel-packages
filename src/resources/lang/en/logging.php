@@ -19,6 +19,7 @@ return [
         'causer_type' => 'Causer type',
         'description' => 'Description',
         'created_at' => 'Created',
+        'updated_at' => 'Updated',
         'properties' => 'Properties',
     ],
     'properties' => [
