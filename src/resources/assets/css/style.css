@@ -1,0 +1,17 @@
+.logging .pagination {
+	margin: 0;
+}
+
+.logging-center_text {
+	text-align: center;
+}
+
+.logging-call_properties {
+	float: left; 
+	padding: 3px;
+}
+
+.logging-value {
+	display: inline-block; 
+	width:100%;
+}

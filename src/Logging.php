@@ -80,16 +80,16 @@ class Logging
 
         fwrite($out, "\xEF\xBB\xBF");
         fputcsv($out, [
-            __('admin.logging.fields.id'),
-            __('admin.logging.fields.log_name'),
-            __('admin.logging.fields.subject_id'),
-            __('admin.logging.fields.subject_type'),
-            __('admin.logging.fields.causer_id'),
-            __('admin.logging.fields.causer_type'),
-            __('admin.logging.fields.description'),
-            __('admin.logging.fields.properties'),
-            __('admin.logging.fields.created_at'),
-            __('admin.logging.fields.updated_at'),
+            __('logging::logging.fields.id'),
+            __('logging::logging.fields.log_name'),
+            __('logging::logging.fields.subject_id'),
+            __('logging::logging.fields.subject_type'),
+            __('logging::logging.fields.causer_id'),
+            __('logging::logging.fields.causer_type'),
+            __('logging::logging.fields.description'),
+            __('logging::logging.fields.properties'),
+            __('logging::logging.fields.created_at'),
+            __('logging::logging.fields.updated_at'),
         ], ';');
 
         foreach($rows as $row) {

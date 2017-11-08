@@ -10,12 +10,10 @@ use Carbon\Carbon;
 class LoggingRender extends Logging
 {
     private $logging;
-    public $pathToTranslations;
 
     public function __construct($user=null, $rowCount=null)
     {
         $this->logging            = new Logging($user, $rowCount);
-        $this->pathToTranslations = config('logging.path_to_translations');
     }
 
     public function renderUserLogging()
