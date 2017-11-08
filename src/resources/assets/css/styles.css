@@ -17,5 +17,6 @@
 }
 
 .logging-dropdown_menu {
-	right: 0
+	right: 0;
+	left: auto;
 }
