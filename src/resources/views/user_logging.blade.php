@@ -13,7 +13,7 @@
 	  <table class="table">
 	    <tbody>
 	    	<tr>
-		      <th style="width: 10px">{{ __('logging::logging.fields.id') }}</th>
+		      <th style="width: 5%">{{ __('logging::logging.fields.id') }}</th>
 		      <th>{{ __('logging::logging.fields.log_name') }}</th>
 		      <th>{{ __('logging::logging.fields.subject_id') }}</th>
 		      <th>{{ __('logging::logging.fields.subject_type') }}</th>
@@ -21,7 +21,7 @@
 		      <th>{{ __('logging::logging.fields.causer_type') }}</th>
 		      <th>{{ __('logging::logging.fields.description') }}</th>
 		      <th>{{ __('logging::logging.fields.created_at') }}</th>
-		      <th style="width: 10px">{{ __('logging::logging.fields.properties') }}</th>
+		      <th style="width: 10%">{{ __('logging::logging.fields.properties') }}</th>
 		    </tr>
 
 	    	@foreach ($rows as $row)
@@ -39,7 +39,7 @@
 			      	@if (!is_null(\Ebola\Logging\Helpers\Properties::getProperties($row, 'attributes')))
 			      		<div class="action-buttons dropdown logging-call_properties">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
-						    <ul class="dropdown-menu">
+						    <ul class="dropdown-menu logging-dropdown_menu">
 				              <li class="header logging-center_text">{{ __('logging::logging.properties.attributes_title') }}</li>
 				              <li>
 				              	<div class="logging-center_text">
@@ -59,7 +59,7 @@
 					@if (!is_null(\Ebola\Logging\Helpers\Properties::getProperties($row, 'old')))
 						<div class="action-buttons dropdown logging-call_properties">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
-						    <ul class="dropdown-menu">
+						    <ul class="dropdown-menu logging-dropdown_menu">
 				              <li class="header logging-center_text">{{ __('logging::logging.properties.old_attributes_title') }}</li>
 				              <li>
 				              	<div class="logging-center_text">
@@ -79,7 +79,7 @@
 					@if (!is_null(\Ebola\Logging\Helpers\Properties::getPropertiesChanges($row)))
 						<div class="action-buttons dropdown logging-call_properties">
 						    <a class="btn btn-default btn-xs dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-external-link-square"></i></a>
-						    <ul class="dropdown-menu">
+						    <ul class="dropdown-menu logging-dropdown_menu">
 				              <li class="header logging-center_text">{{ __('logging::logging.properties.changes_title') }}</li>
 				              <li>
 				              	<div class="logging-center_text">

@@ -13,5 +13,9 @@
 
 .logging-value {
 	display: inline-block; 
-	width:100%;
+	width: 100%;
+}
+
+.logging-dropdown_menu {
+	right: 0
 }
