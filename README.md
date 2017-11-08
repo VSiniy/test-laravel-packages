@@ -1,6 +1,8 @@
 ebola/logging
 
-Требования к установленному ПО
+!!! It's TEST package !!!
+
+Требования к установленному ПО 
 
 PHP >= 7.1
 Composer
