@@ -60,7 +60,7 @@ return [
         'causer_id',
         'causer_type',
         'description',
-        'properties',
+        // 'properties',
         'created_at',
         // 'updated_at',
     ],
