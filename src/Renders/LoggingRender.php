@@ -18,12 +18,25 @@ class LoggingRender extends Logging
 
     public function renderUserLogging()
     {
-        $rows     = $this->logging->getRows();
+        $request = request();
 
-        $rows     = $rows->paginate($this->logging->getRowCount());
+        $rows = $this->logging->getRows();
+
+        // if ($request->ajax()) {
+            
+        // }
+
+        $rows      = $rows->paginate($this->logging->getRowCount());
 
         $fields           = $this->logging->getFields();
         $translatedFields = $this->logging->getTranslatedFields();
+
+        if ($request->ajax()) {
+            return [
+                    'pagination' => view('logging::_pagination', compact('rows'))->render(),
+                    'table'      => view('logging::_table', compact('rows', 'fields', 'translatedFields'))->render(),
+            ];
+        }
 
         return view('logging::user_logging', compact('rows', 'fields', 'translatedFields'));
     }

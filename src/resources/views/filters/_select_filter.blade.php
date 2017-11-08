@@ -1,0 +1,1 @@
+{{ Form::select($field, $arrayValues, null, ['class' => 'form-control filter filter-select2']) }}

@@ -69,5 +69,21 @@ return [
      * Path to translated logging fields
      * Need path to fields translates in "dot" notation
      */
-    'translation_path' => null, // 'admin.logging.fields => []'
+    'translation_path' => null, // 'admin.logging.fields' => []
+
+    /*
+     * Filters for fields
+     * Types of filter and fields for it
+     */
+    'logging_filters' => [
+        'selectable' => [
+            'log_name',
+            'subject_type',
+            'causer_id',
+        ],
+
+        'according_to_the_text' => [
+            'created_at',
+        ],
+    ],
 ];
