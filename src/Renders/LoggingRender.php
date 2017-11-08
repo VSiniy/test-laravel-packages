@@ -18,19 +18,15 @@ class LoggingRender extends Logging
 
     public function renderUserLogging()
     {
-        $pathToTranslations = $this->pathToTranslations;
-
         $rows     = $this->logging->getRows();
 
         $rows     = $rows->paginate($this->logging->getRowCount());
 
-        return view('logging::user_logging', compact('rows', 'pathToTranslations'));
+        return view('logging::user_logging', compact('rows'));
     }
 
     public function renderDownloadLogging()
     {
-        $pathToTranslations = $this->pathToTranslations;
-
         $request = request();
 
         if ($request->has('date_start') || $request->has('date_end')) {
@@ -40,7 +36,7 @@ class LoggingRender extends Logging
             ]);
 
             if ($validator->fails()) {
-                return view('logging::download_logging', compact('pathToTranslations'))->withErrors($validator);
+                return view('logging::download_logging')->withErrors($validator);
             } else {
                 $this->logging->setParameters($request->all());
 
@@ -48,6 +44,6 @@ class LoggingRender extends Logging
             }
         }
 
-        return view('logging::download_logging', compact('pathToTranslations'));
+        return view('logging::download_logging');
     }
 }
