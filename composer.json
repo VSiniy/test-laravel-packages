@@ -13,12 +13,14 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.0",
         "spatie/laravel-activitylog": "2.*"
     },
     "autoload": {
         "psr-4": {
             "Ebola\\Logging\\": "src"
         }
-    }
+    },
+    "minimum-stability": "v0.5",
+    "prefer-stable": true
 }
