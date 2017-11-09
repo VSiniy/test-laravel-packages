@@ -21,6 +21,6 @@
             "Ebola\\Logging\\": "src"
         }
     },
-    "minimum-stability": "v0.5",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
