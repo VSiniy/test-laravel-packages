@@ -2,6 +2,8 @@
 
 namespace Ebola\Logging;
 
+use Ebola\Logging\Helpers\Filters;
+
 class Logging
 {
     protected $user;
@@ -11,11 +13,11 @@ class Logging
     protected $activityModel;
     protected $translationPath;
 
-    public function __construct($user, $fields, $rowCount)
+    public function __construct($user, $fields)
     {
         $this->user            = $user;
         $this->fields          = $fields ?? config('logging.logging_fields');
-        $this->rowCount        = $rowCount ?? config('logging.num_rows_on_page');
+        $this->rowCount        = config('logging.num_rows_on_page');
         $this->fileLoggingPath = config('logging.download_path');
         $this->activityModel   = config('activitylog.activity_model');
         $this->translationPath = config('logging.translation_path');
@@ -63,7 +65,7 @@ class Logging
         return $translatedFields;
     }
 
-    protected function getRows()
+    protected function getRows($filters=[])
     {
         $user          = $this->getUser();
         $activityModel = $this->getActivityModel();
@@ -72,6 +74,9 @@ class Logging
 
         if (isset($user))
             $rows = $rows->where('causer_id', $user->id);
+
+        if (!empty($filters))
+            $rows = $this->getFilteredQuery($rows, $filters);
 
         return $rows;
     }
@@ -109,5 +114,22 @@ class Logging
         header('Content-Length: ' . filesize(public_path() . $fileLoggingPath . $filename));
 
         exit;
+    }
+
+    private function getFilteredQuery($rows, $filters)
+    {
+        $selectable         = config('logging.logging_filters.selectable');
+        $accordingToTheText = config('logging.logging_filters.according_to_the_text');
+
+        foreach ($filters as $field => $value) {
+            if (in_array($field, $selectable) && ($value !== Filters::SELECT_DEFAULT_KEY))
+                $rows = $rows->where($field, '=', $value);
+
+            if (in_array($field, $accordingToTheText) && !is_null($value))
+                $rows = $rows->where($field, 'like', '%' . $value . '%');
+
+        }
+
+        return $rows;
     }
 }

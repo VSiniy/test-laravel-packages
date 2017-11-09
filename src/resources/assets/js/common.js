@@ -13,22 +13,14 @@
         var $table      = $('#table'),
             $pagination = $('#pagination');
 
-        var url = '?';
+        var uri = '?';
         $.each($('.filter'), function(key, item) {
-            url += $(item).attr('name') + '=' + $(item).val() + '&';
+            uri += $(item).attr('name') + '=' + $(item).val() + '&';
         });
 
-        url = url.slice(0, -1);
+        uri = uri.slice(0, -1);
 
-        $.ajax({
-            type: 'get',
-            url:  url,
-            dataType: 'json',
-            success: function(data) {
-                $pagination.append(data.pagination);
-                $table.append(data.table);
-            }
-        });
+        window.location.href = document.location.origin + document.location.pathname + uri;
     };
 
     init();

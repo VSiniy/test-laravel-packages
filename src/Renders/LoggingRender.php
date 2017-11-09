@@ -11,32 +11,22 @@ class LoggingRender extends Logging
 {
     private $logging;
 
-    public function __construct($user=null, $fields=null, $rowCount=null)
+    public function __construct($user=null, $fields=null)
     {
-        $this->logging = new Logging($user, $fields, $rowCount);
+        $this->logging = new Logging($user, $fields);
     }
 
     public function renderUserLogging()
     {
         $request = request();
+        $filters = $request->all();
 
-        $rows = $this->logging->getRows();
+        $rows = $this->logging->getRows($filters);
 
-        // if ($request->ajax()) {
-            
-        // }
-
-        $rows      = $rows->paginate($this->logging->getRowCount());
+        $rows = $rows->paginate($this->logging->getRowCount());
 
         $fields           = $this->logging->getFields();
         $translatedFields = $this->logging->getTranslatedFields();
-
-        if ($request->ajax()) {
-            return [
-                    'pagination' => view('logging::_pagination', compact('rows'))->render(),
-                    'table'      => view('logging::_table', compact('rows', 'fields', 'translatedFields'))->render(),
-            ];
-        }
 
         return view('logging::user_logging', compact('rows', 'fields', 'translatedFields'));
     }

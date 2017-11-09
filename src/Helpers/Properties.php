@@ -41,7 +41,7 @@ class Properties
 
         $checkAttributes = false;
         foreach ($attributes as $key => $value) {
-            if ($oldAttributes[$key] != $value) {
+            if (!empty($oldAttributes) && ($oldAttributes[$key] != $value)) {
                 $checkAttributes = true;
                 break;
             }
