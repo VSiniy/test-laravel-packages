@@ -28,7 +28,7 @@ class LoggingRender extends Logging
         $fields           = $this->logging->getFields();
         $translatedFields = $this->logging->getTranslatedFields();
 
-        return view('logging::user_logging', compact('rows', 'fields', 'translatedFields'));
+        return view('logging::user_logging', compact('rows', 'fields', 'translatedFields', 'filters'));
     }
 
     public function renderDownloadLogging()

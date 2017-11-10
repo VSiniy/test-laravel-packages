@@ -4,7 +4,7 @@
 
 	  <div class="box-tools logging">
 
-	      {{ $rows->links() }}
+	      {{ $rows->appends($filters)->links() }}
 
 	  </div>
 	</div>
