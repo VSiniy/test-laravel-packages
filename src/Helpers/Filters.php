@@ -5,6 +5,7 @@ namespace Ebola\Logging\Helpers;
 class Filters
 {
     const SELECT_DEFAULT_KEY = 'default';
+    const SELECT_NULL_KEY    = 'null';
 
     public static function getFilter($field, $translate)
     {   
@@ -33,7 +34,7 @@ class Filters
             if (!is_null($value->{$field})) {
                 $arrayValues[$value->{$field}] = $value->{$field};
             } else {
-                $arrayValues['null'] = __('logging::logging.user_logging.undefined');
+                $arrayValues[self::SELECT_NULL_KEY] = __('logging::logging.user_logging.undefined');
             }
         }
 

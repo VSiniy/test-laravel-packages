@@ -122,8 +122,13 @@ class Logging
         $accordingToTheText = config('logging.logging_filters.according_to_the_text');
 
         foreach ($filters as $field => $value) {
-            if (in_array($field, $selectable) && ($value !== Filters::SELECT_DEFAULT_KEY))
-                $rows = $rows->where($field, '=', $value);
+            if (in_array($field, $selectable) && ($value !== Filters::SELECT_DEFAULT_KEY)) {
+                if ($value !== Filters::SELECT_NULL_KEY) {
+                    $rows = $rows->where($field, '=', $value);
+                } else {
+                    $rows = $rows->where($field, '=', null);
+                }
+            }
 
             if (in_array($field, $accordingToTheText) && !is_null($value))
                 $rows = $rows->where($field, 'like', '%' . $value . '%');
