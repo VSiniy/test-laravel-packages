@@ -3,6 +3,7 @@
 return [
     'user_logging' => [
         'title' => 'User logging',
+        'undefined' => 'Undefined',
     ],
     'download_logging' => [
         'title' => 'Download logging',

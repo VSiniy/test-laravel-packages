@@ -3,6 +3,7 @@
 return [
     'user_logging' => [
         'title' => 'Логування користувачів',
+        'undefined' => 'Не визначено',
     ],
     'download_logging' => [
         'title' => 'Завантажити файл логування',
