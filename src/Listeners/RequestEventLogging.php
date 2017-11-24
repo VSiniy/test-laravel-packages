@@ -18,11 +18,13 @@ class RequestEventLogging
         if ($webKey !== false) 
             $loggingRoutes = array_replace($loggingRoutes, [$webKey => null]);
 
-        $routePrefix = trim($event->request->route()->getPrefix(), '/');
+        if (!is_null($event->request->route()))
+            $routePrefix = trim($event->request->route()->getPrefix(), '/');
+
         $routeUri    = $event->request->getRequestUri();
         $homeUrl     = $event->request->getSchemeAndHttpHost();
 
-        if (in_array($routePrefix, $loggingRoutes)) {
+        if (isset($routePrefix) && in_array($routePrefix, $loggingRoutes)) {
             if (!$event->request->ajax() || ($event->request->ajax() && config('logging.logging_routing_save_ajax'))) {
                 $url = $homeUrl . ((strpos($routeUri, '?') !== false) ? substr($routeUri, 0, strpos($routeUri, '?')) : $routeUri);
 
