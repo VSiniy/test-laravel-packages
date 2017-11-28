@@ -34,17 +34,42 @@ class MailEventLogging
      */
     private function getProperties($message)
     {
-        $properties['attributes']['subject']          = $message->getSubject() ?? false;
-        $properties['attributes']['date']['date']     = $message->getDate()->format('d.m.Y') ?? false;
-        $properties['attributes']['date']['timezone'] = $message->getDate()->getTimezone()->getName() ?? false;
-        $properties['attributes']['from']             = $message->getFrom() ?? false;
-        $properties['attributes']['replyTo']          = $message->getReplyTo() ?? false;
-        $properties['attributes']['to']               = $message->getTo() ?? false;
-        $properties['attributes']['cc']               = $message->getCc() ?? false;
-        $properties['attributes']['bcc']              = $message->getBcc() ?? false;
-        $properties['attributes']['readReceiptTo']    = $message->getReadReceiptTo() ?? false;
-        $properties['attributes']['body']             = $message->getBody() ?? false;
+        $subject       = $message->getSubject() ?? false;
+        $date          = $message->getDate()->format('d.m.Y') . ' | ' . $message->getDate()->getTimezone()->getName();
+        $from          = $message->getFrom() ?? [];
+        $replyTo       = $message->getReplyTo() ?? [];
+        $to            = $message->getTo() ?? [];
+        $cc            = $message->getCc() ?? [];
+        $bcc           = $message->getBcc() ?? [];
+        $readReceiptTo = $message->getReadReceiptTo() ?? [];
+        // $body          = $message->getBody() ?? false;
+
+        $properties['attributes']['subject']          = $subject;
+        $properties['attributes']['date']             = $date;
+        $properties['attributes']['from']             = implode('| ', array_map('self::customImplode', $from,          array_keys($from)));
+        $properties['attributes']['replyTo']          = implode('| ', array_map('self::customImplode', $replyTo,       array_keys($replyTo)));
+        $properties['attributes']['to']               = implode('| ', array_map('self::customImplode', $to,            array_keys($to)));
+        $properties['attributes']['cc']               = implode('| ', array_map('self::customImplode', $cc,            array_keys($cc)));
+        $properties['attributes']['bcc']              = implode('| ', array_map('self::customImplode', $bcc,           array_keys($bcc)));
+        $properties['attributes']['readReceiptTo']    = implode('| ', array_map('self::customImplode', $readReceiptTo, array_keys($readReceiptTo)));
+        // $properties['attributes']['body']             = $body;
 
         return $properties;
+    }
+
+    /**
+     * Convert array to string for array_map
+     *
+     * @param  string $key
+     * @param  string $value
+     * @return string $propertyString
+     */
+    private static function customImplode($value, $key)
+    {
+        if(is_array($value)) {
+            return $key . ' []=> ' . implode('&' . $key .' []=> ', $value);
+        } else {
+            return $key . ' => ' . $value;
+        }
     }
 }

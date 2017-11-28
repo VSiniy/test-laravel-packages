@@ -52,6 +52,24 @@ And add aliase:
 ];
 ```
 
+You must publish activitylog migration:
+
+```bash
+php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="migrations"
+```
+
+You must migrate:
+
+```bash
+php artisan migrate
+```
+
+You can optionally publish the activitylog config file:
+
+```bash
+php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="config"
+```
+
 You can publish the views with:
 
 ```bash
@@ -203,9 +221,9 @@ public function boot()
 You must make object of LoggingRender class. You can transfer as a parameter the user object to display only its logs, as well as a list of fields to display on the screen or save them. If the values are not transferred, you will output all the logs with the fields specified in the config file.
 
 ```php
-	$logging = new LoggingRender();
+    $logging = new LoggingRender();
 
-	// or
+    // or
 
     $logging = new LoggingRender(\Auth::user(), ['id', 'log_name', 'description']);
 ```
@@ -213,18 +231,26 @@ You must make object of LoggingRender class. You can transfer as a parameter the
 You have two protected methods for display logs:
 
 ```php
-	{!! $logging->renderUserLogging() !!}
+    {!! $logging->renderUserLogging() !!}
 
     {!! $logging->renderDownloadLogging() !!}
+```
+
+If you use rendering methods, do not forget to call css and js for the correct display:
+
+```php
+    <link rel="stylesheet" href="{{ asset('vendor/logging/css/styles.css') }}">
+
+    <script src="{{ asset('vendor/logging/js/common.js') }}"></script>
 ```
 
 In each of them, methods are available to retrieve records and create a file to load it
 
 ```php
-	// User in logging object
-	$loggingUser = $this->getUser();
+    // User in logging object
+    $loggingUser = $this->getUser();
 
-	// Path to download directory from config download_path
+    // Path to download directory from config download_path
     $fileLoggingPath = $this->getFileLoggingPath();
 
     // Path to activity model from config activitylog.activity_model
@@ -233,7 +259,7 @@ In each of them, methods are available to retrieve records and create a file to 
     // Path to translation path from config translation_path
     $pathToTranslationFields = $this->getTranslationPath();
 
-	// From config num_rows_on_page
+    // From config num_rows_on_page
     $countRowOnDisplayFromConfig = $this->logging->getRowCount();
 
     // Fields from object. Default from config logging_fields
@@ -243,9 +269,9 @@ In each of them, methods are available to retrieve records and create a file to 
     $translatedFieldsForDisplay = $this->logging->getTranslatedFields();
 
     // Returns the constructed query
-	// Fields must exist in the log table and be broken according to the type of filtering in the config logging_filters
-	// Default filters are empty array
-	$rows = $this->logging->getRows($filters);
+    // Fields must exist in the log table and be broken according to the type of filtering in the config logging_filters
+    // Default filters are empty array
+    $rows = $this->logging->getRows($filters);
 
     // Creates a file and displays a custom save window
     $rows = $this->logging->getRows()->get()
@@ -255,99 +281,99 @@ In each of them, methods are available to retrieve records and create a file to 
 There are also 2 static classes to help in the output of the properties of the logged models and the display of filters
 
 ```php
-	// Work with json properties field from Activity model
-	class Properties
-	{
-	    public static function getProperties($activity, $flag='attributes')
-	    {   
-	        $properties = $activity->properties->toArray();
+    // Work with json properties field from Activity model
+    class Properties
+    {
+        public static function getProperties($activity, $flag='attributes')
+        {   
+            $properties = $activity->properties->toArray();
 
-	        return array_key_exists($flag, $properties) ? $properties[$flag] : null;
-	    }
+            return array_key_exists($flag, $properties) ? $properties[$flag] : null;
+        }
 
-	    public static function getPropertiesChanges($activity)
-	    {
-	        $attributes = self::getProperties($activity, 'attributes');
-	        $old        = self::getProperties($activity, 'old');
+        public static function getPropertiesChanges($activity)
+        {
+            $attributes = self::getProperties($activity, 'attributes');
+            $old        = self::getProperties($activity, 'old');
 
-	        $result = [];
-	        foreach ($attributes ?? [] as $key => $value) {
-	            if (isset($old) && ($attributes[$key] != $old[$key])) {
-	                $result[] = $key;
-	            }
-	        }
+            $result = [];
+            foreach ($attributes ?? [] as $key => $value) {
+                if (isset($old) && ($attributes[$key] != $old[$key])) {
+                    $result[] = $key;
+                }
+            }
 
-	        return !empty($result) ? $result : null;
-	    }
+            return !empty($result) ? $result : null;
+        }
 
-	    public static function getPropertiesArray($model)
-	    {
-	        $attributes    = $model->getAttributes();
-	        $oldAttributes = $model->getOriginal();
-	        
-	        $properties['attributes'] = $attributes;
+        public static function getPropertiesArray($model)
+        {
+            $attributes    = $model->getAttributes();
+            $oldAttributes = $model->getOriginal();
+        
+            $properties['attributes'] = $attributes;
 
-	        $checkAttributes = false;
-	        foreach ($attributes as $key => $value) {
-	            if (!empty($oldAttributes) && ($oldAttributes[$key] != $value)) {
-	                $checkAttributes = true;
-	                break;
-	            }
-	        }
+            $checkAttributes = false;
+            foreach ($attributes as $key => $value) {
+                if (!empty($oldAttributes) && ($oldAttributes[$key] != $value)) {
+                    $checkAttributes = true;
+                    break;
+                }
+            }
 
-	        if ($checkAttributes) 
-	            $properties['old']    = $oldAttributes;
+            if ($checkAttributes) 
+                $properties['old']    = $oldAttributes;
 
-	        return $properties;
-	    }
-	}
+            return $properties;
+        }
+    }
 ```
 
 ```php
-	// Display filter if transmitted field is in array from config logging_filters
-	class Filters
-	{
-	    const SELECT_DEFAULT_KEY = 'default';
+    // Display filter if transmitted field is in array from config logging_filters
+    class Filters
+    {
+        const SELECT_DEFAULT_KEY = 'default';
 
-	    public static function getFilter($field, $translate)
-	    {   
-	        $fieldsForFilterSelect = config('logging.logging_filters.selectable');
-	        $fieldsForFilterText   = config('logging.logging_filters.according_to_the_text');
+        public static function getFilter($field, $translate)
+        {   
+            $fieldsForFilterSelect = config('logging.logging_filters.selectable');
+            $fieldsForFilterText   = config('logging.logging_filters.according_to_the_text');
 
-	        if (in_array($field, $fieldsForFilterSelect)) {
-	            $resultHtml = self::getSelectFilter($field, $translate);
-	        } elseif (in_array($field, $fieldsForFilterText)) {
-	            $resultHtml = self::getTextFilter($field, $translate);
-	        } else {
-	            $resultHtml = null;
-	        }
+            if (in_array($field, $fieldsForFilterSelect)) {
+                $resultHtml = self::getSelectFilter($field, $translate);
+            } elseif (in_array($field, $fieldsForFilterText)) {
+                $resultHtml = self::getTextFilter($field, $translate);
+            } else {
+                $resultHtml = null;
+            }
 
-	        return $resultHtml;
-	    }
+            return $resultHtml;
+        }
 
-	    private static function getSelectFilter($field, $translate)
-	    {
-	        $activityModel = config('activitylog.activity_model');
+        private static function getSelectFilter($field, $translate)
+        {
+            $activityModel = config('activitylog.activity_model');
 
-	        $values = $activityModel::select([$field])->distinct()->orderBy($field)->get();
+            $values = $activityModel::select([$field])->distinct()->orderBy($field)->get();
 
-	        $arrayValues[self::SELECT_DEFAULT_KEY] = $translate;
-	        foreach ($values as $value) {
-	            if (!is_null($value->{$field})) {
-	                $arrayValues[$value->{$field}] = $value->{$field};
-	            } else {
-	                $arrayValues['null'] = __('logging::logging.user_logging.undefined');
-	            }
-	        }
+            $arrayValues[self::SELECT_DEFAULT_KEY] = $translate;
+            foreach ($values as $value) {
+                if (!is_null($value->{$field})) {
+                    $arrayValues[$value->{$field}] = $value->{$field};
+                } else {
+                    $arrayValues['null'] = __('logging::logging.user_logging.undefined');
+                }
+            }
 
-	        return view('logging::filters._select_filter', compact('field', 'arrayValues'));
-	    }
-	     
-	    private static function getTextFilter($field, $translate)
-	    {
-	        return view('logging::filters._text_filter', compact('field', 'translate'));
-	    }
-	}
+            return view('logging::filters._select_filter', compact('field', 'arrayValues'));
+        }
+     
+        private static function getTextFilter($field, $translate)
+        {
+            return view('logging::filters._text_filter', compact('field', 'translate'));
+        }
+    }
 ```
 
 ## License
