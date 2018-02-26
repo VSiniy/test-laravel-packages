@@ -18,7 +18,8 @@ class UserEventLogging
      */
     public function onUserRegistered($event) 
     {
-        activity('user-registered')->log(self::getMessage($event, self::EVENT_REGISTERED));
+        activity('user-registered')->causedBy($event->user)
+                                   ->log(self::getMessage($event, self::EVENT_REGISTERED));
     }
 
     /**
@@ -26,7 +27,8 @@ class UserEventLogging
      */
     public function onUserAttempting($event) 
     {
-        activity('user-attempting')->log(self::getMessage($event, self::EVENT_ATTEMPTING));
+        activity('user-attempting')->causedBy($event->user)
+                                   ->log(self::getMessage($event, self::EVENT_ATTEMPTING));
     }
 
     /**
@@ -35,7 +37,8 @@ class UserEventLogging
     public function onUserAuthenticated($event) 
     {
         if (!\Request::ajax())
-            activity('user-authenticated')->log(self::getMessage($event, self::EVENT_AUTHENTICATED));
+            activity('user-authenticated')->causedBy($event->user)
+                                          ->log(self::getMessage($event, self::EVENT_AUTHENTICATED));
     }
 
     /**
@@ -43,7 +46,8 @@ class UserEventLogging
      */
     public function onUserLogin($event) 
     {
-        activity('user-login')->log(self::getMessage($event, self::EVENT_LOGIN));
+        activity('user-login')->causedBy($event->user)
+                              ->log(self::getMessage($event, self::EVENT_LOGIN));
     }
 
     /**
@@ -51,7 +55,8 @@ class UserEventLogging
      */
     public function onUserFailed($event) 
     {
-        activity('user-failed-auth')->log(self::getMessage($event, self::EVENT_FAILED));
+        activity('user-failed-auth')->causedBy($event->user)
+                                    ->log(self::getMessage($event, self::EVENT_FAILED));
     }
 
     /**
@@ -59,7 +64,8 @@ class UserEventLogging
      */
     public function onUserLogout($event) 
     {
-        activity('user-logout')->log(self::getMessage($event, self::EVENT_LOGOUT));
+        activity('user-logout')->causedBy($event->user)
+                               ->log(self::getMessage($event, self::EVENT_LOGOUT));
     }
 
     /**
@@ -67,7 +73,8 @@ class UserEventLogging
      */
     public function onUserLockout($event) 
     {
-        activity('user-lockout')->log(self::getMessage($event, self::EVENT_LOCKOUT));
+        activity('user-lockout')->causedBy($event->user)
+                                ->log(self::getMessage($event, self::EVENT_LOCKOUT));
     }
 
     /**
@@ -75,7 +82,8 @@ class UserEventLogging
      */
     public function onUserPasswordReset($event) 
     {
-        activity('user-password-reset')->log(self::getMessage($event, self::EVENT_PASSWORD_RESET));
+        activity('user-password-reset')->causedBy($event->user)
+                                       ->log(self::getMessage($event, self::EVENT_PASSWORD_RESET));
     }
 
     /**
@@ -140,10 +148,15 @@ class UserEventLogging
     {
         $message = '';
 
-        if (!is_null($event->user) && !is_null($event->user->guard)) {
-            $message .= title_case($event->user->guard) . ' ';
-        } else {
-            $message .= title_case(config('auth.defaults.guard'));
+        $guards  = array_keys(config('auth.guards'));
+        foreach ($guards as $guard) {
+            if (auth()->guard($guard)->check()) {
+                $message .= title_case($guard) . ' ';
+            }
+        }
+
+        if (empty($message)) {
+            $message .= title_case(config('auth.defaults.guard')) . ' ';
         }
 
         $message .= 'user ';
@@ -154,30 +167,36 @@ class UserEventLogging
 
         switch($key) {
             case self::EVENT_REGISTERED:
-                $message .= 'registered'; 
+                $message .= 'registered';
+                return $message; 
 
             case self::EVENT_ATTEMPTING:
                 $message .= 'attempting'; 
+                return $message;
 
             case self::EVENT_AUTHENTICATED:
                 $message .= 'authenticated'; 
+                return $message;
                 
             case self::EVENT_LOGIN:
                 $message .= 'login'; 
+                return $message;
 
             case self::EVENT_FAILED:
                 $message .= 'failed'; 
+                return $message;
 
             case self::EVENT_LOGOUT: 
                 $message .= 'logout'; 
+                return $message;
 
             case self::EVENT_LOCKOUT: 
                 $message .= 'lockout'; 
+                return $message;
 
             case self::EVENT_PASSWORD_RESET: 
                 $message .= 'password reset'; 
+                return $message;
         }
-
-        return $message;
     }
 }
