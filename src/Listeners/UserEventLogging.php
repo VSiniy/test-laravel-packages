@@ -18,7 +18,7 @@ class UserEventLogging
      */
     public function onUserRegistered($event) 
     {
-        activity('user-registered')->log('User registered');
+        activity('user-registered')->log(self::getMessage($event, self::EVENT_REGISTERED));
     }
 
     /**
@@ -26,7 +26,7 @@ class UserEventLogging
      */
     public function onUserAttempting($event) 
     {
-        activity('user-attempting')->log('User attempting');
+        activity('user-attempting')->log(self::getMessage($event, self::EVENT_ATTEMPTING));
     }
 
     /**
@@ -35,7 +35,7 @@ class UserEventLogging
     public function onUserAuthenticated($event) 
     {
         if (!\Request::ajax())
-            activity('user-authenticated')->log('User authenticated');
+            activity('user-authenticated')->log(self::getMessage($event, self::EVENT_AUTHENTICATED));
     }
 
     /**
@@ -43,7 +43,7 @@ class UserEventLogging
      */
     public function onUserLogin($event) 
     {
-        activity('user-login')->log('User login');
+        activity('user-login')->log(self::getMessage($event, self::EVENT_LOGIN));
     }
 
     /**
@@ -51,7 +51,7 @@ class UserEventLogging
      */
     public function onUserFailed($event) 
     {
-        activity('user-failed-auth')->log('User failed');
+        activity('user-failed-auth')->log(self::getMessage($event, self::EVENT_FAILED));
     }
 
     /**
@@ -59,7 +59,7 @@ class UserEventLogging
      */
     public function onUserLogout($event) 
     {
-        activity('user-logout')->log('User logout');
+        activity('user-logout')->log(self::getMessage($event, self::EVENT_LOGOUT));
     }
 
     /**
@@ -67,7 +67,7 @@ class UserEventLogging
      */
     public function onUserLockout($event) 
     {
-        activity('user-lockout')->log('User lockout');
+        activity('user-lockout')->log(self::getMessage($event, self::EVENT_LOCKOUT));
     }
 
     /**
@@ -75,7 +75,7 @@ class UserEventLogging
      */
     public function onUserPasswordReset($event) 
     {
-        activity('user-password-reset')->log('User password reset');
+        activity('user-password-reset')->log(self::getMessage($event, self::EVENT_PASSWORD_RESET));
     }
 
     /**
@@ -134,5 +134,50 @@ class UserEventLogging
                 'Illuminate\Auth\Events\PasswordReset',
                 'Ebola\Logging\Listeners\UserEventLogging@onUserPasswordReset'
             );
+    }
+
+    private static function getMessage($event, $key) 
+    {
+        $message = '';
+
+        if (!is_null($event->user) && !is_null($event->user->guard)) {
+            $message .= title_case($event->user->guard) . ' ';
+        } else {
+            $message .= title_case(config('auth.defaults.guard')));
+        }
+
+        $message .= 'user ';
+
+        if (!is_null($event->user) && !is_null($event->user->email)) {
+            $message .= 'with email ' . title_case($event->user->email) . ' ';
+        }
+
+        switch($key) {
+            case self::EVENT_REGISTERED:
+                $message .= 'registered'; 
+
+            case self::EVENT_ATTEMPTING:
+                $message .= 'attempting'; 
+
+            case self::EVENT_AUTHENTICATED:
+                $message .= 'authenticated'; 
+                
+            case self::EVENT_LOGIN:
+                $message .= 'login'; 
+
+            case self::EVENT_FAILED:
+                $message .= 'failed'; 
+
+            case self::EVENT_LOGOUT: 
+                $message .= 'logout'; 
+
+            case self::EVENT_LOCKOUT: 
+                $message .= 'lockout'; 
+
+            case self::EVENT_PASSWORD_RESET: 
+                $message .= 'password reset'; 
+        }
+
+        return $message;
     }
 }
