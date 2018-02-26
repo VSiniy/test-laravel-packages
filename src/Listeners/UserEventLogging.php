@@ -162,7 +162,7 @@ class UserEventLogging
         $message .= 'user ';
 
         if (!is_null($event->user) && !is_null($event->user->email)) {
-            $message .= 'with email ' . title_case($event->user->email) . ' ';
+            $message .= 'with email ' . $event->user->email . ' ';
         }
 
         switch($key) {
