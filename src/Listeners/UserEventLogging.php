@@ -143,7 +143,7 @@ class UserEventLogging
         if (!is_null($event->user) && !is_null($event->user->guard)) {
             $message .= title_case($event->user->guard) . ' ';
         } else {
-            $message .= title_case(config('auth.defaults.guard')));
+            $message .= title_case(config('auth.defaults.guard'));
         }
 
         $message .= 'user ';
