@@ -27,7 +27,10 @@ class UserEventLogging
      */
     public function onUserAttempting($event) 
     {
-        activity('user-attempting')->causedBy($event->user)
+        $userModel      = config('auth.providers.users.model');
+        $attemptingUser = $userModel::whereEmail($event->credentials['email'])->first();
+        
+        activity('user-attempting')->causedBy($attemptingUser)
                                    ->log(self::getMessage($event, self::EVENT_ATTEMPTING));
     }
 
@@ -161,8 +164,10 @@ class UserEventLogging
 
         $message .= 'user ';
 
-        if (!is_null($event->user) && !is_null($event->user->email)) {
-            $message .= 'with email ' . $event->user->email . ' ';
+        if ($key == self::EVENT_ATTEMPTING) {
+            $message .= 'with email ' . title_case($event->credentials['email']) . ' ';
+        } elseif (!is_null($event->user) && !is_null($event->user->email)) {
+            $message .= 'with email ' . title_case($event->user->email) . ' ';
         }
 
         switch($key) {
